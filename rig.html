@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Character Tool — Rig Studio</title>
+<title>Character Tool — Rig Studio · R129</title>
 <style>
   :root{
     --bg:#0b0b0d; --card1:#16161a; --card2:#0f0f12; --line:rgba(255,255,255,.05);
@@ -1019,6 +1019,11 @@ h1{ font-size:20px !important; letter-spacing:-.4px !important; }
     <div class="brandRow">
       <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3.2"/><path d="M12 8V4.6"/><circle cx="12" cy="3.4" r="1.5"/><circle cx="9" cy="13" r="1.5" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.5" fill="currentColor" stroke="none"/><path d="M9.5 16.4h5"/><path d="M2.4 12v3"/><path d="M21.6 12v3"/></svg></span>
       <div class="brand"><b>Character Tool</b><span>Create · Rig · Animate</span></div>
+      <!-- R129 VERSION BADGE: isse turant dikhega ki kaunsi build live hai -->
+      <div id="r129badge" style="display:inline-flex;align-items:center;gap:6px;margin-left:10px;padding:5px 11px;border-radius:999px;background:linear-gradient(135deg,#00e676,#00b0ff);color:#04120a;font:700 12px/1 system-ui,sans-serif;letter-spacing:.4px;box-shadow:0 2px 10px rgba(0,230,118,.35);white-space:nowrap">
+        <span id="r129lock" style="width:8px;height:8px;border-radius:50%;background:#04120a;opacity:.45"></span>
+        <span>R129 · PER-IMAGE LOCK</span>
+      </div>
     </div>
     <a class="icoBtn" href="index.html" title="Home" aria-label="Home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg>
@@ -5150,6 +5155,7 @@ h1{ font-size:20px !important; letter-spacing:-.4px !important; }
           : 'Nayi photo — jod dobara lagane honge (ek baar, phir yaad rahega)');
       }
       window.__IMG_FP_LOCKED = _has;
+      try { if (window.__R129_PAINT) window.__R129_PAINT(_has); } catch (e4) {}
     } catch (e3) {}
     /* ---- v17.5 · SOLID BACKGROUND AUTO-REMOVE (client-side chroma key, no API) ----
        Gallery se image aayi -> border se bg colour detect -> flood-fill key -> transparent.
@@ -6831,6 +6837,24 @@ h1{ font-size:20px !important; letter-spacing:-.4px !important; }
   function setMeta(label) { try { var st = document.getElementById('stateMeta'); if (st) st.textContent = label; } catch (e) {} }
 
   /* v11: koi demo auto-load nahi — pehle user apna PNG chunta hai */
+  })();
+
+  /* ---- R129 · badge ki batti: photo ki setting mili to hara, nahi to dhundhla ---- */
+  (function () {
+    function paint(on) {
+      try {
+        var d = document.getElementById('r129lock'); if (!d) return;
+        d.style.opacity = on ? '1' : '.45';
+        d.style.background = on ? '#00ff88' : '#04120a';
+        var b = document.getElementById('r129badge');
+        if (b) b.title = on ? 'Is photo ki purani setting mil gayi — jod wapas aa gaye'
+                            : 'Nayi photo — jod ek baar lagane honge, phir hamesha yaad rahega';
+      } catch (e) {}
+    }
+    window.__R129_PAINT = paint;
+    window.addEventListener('load', function () {
+      setTimeout(function () { paint(window.__IMG_FP_LOCKED === true); }, 500);
+    });
   })();
 
   window.RIG = {
